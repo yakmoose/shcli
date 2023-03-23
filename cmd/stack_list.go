@@ -58,7 +58,7 @@ var listStacksCmd = &cobra.Command{
 
 func init() {
 	stackCommand.AddCommand(listStacksCmd)
+
 	listStacksCmd.Flags().StringP("server", "S", "", "The server name to fetch the stack list from")
-	listStacksCmd.MarkFlagRequired("server")
 
 }

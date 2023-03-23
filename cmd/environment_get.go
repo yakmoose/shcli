@@ -45,6 +45,10 @@ var environmentGetCmd = &cobra.Command{
 				return err
 			}
 			fmt.Println(string(json))
+		} else if format == "env" {
+			for _, variable := range environmentVariablesResponse.EnvironmentVariables {
+				fmt.Printf("%s=\"%s\"\t\n", variable.Name, variable.Content)
+			}
 		} else if format == "text" {
 			w := new(tabwriter.Writer)
 			w.Init(os.Stdout, 0, 4, 4, ' ', 0)
