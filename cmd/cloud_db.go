@@ -7,12 +7,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// cloudDbCmd represents the stacks command
-var cloudDbCmd = &cobra.Command{
+// cloudDbCommand represents the stacks command
+var cloudDbCommand = &cobra.Command{
 	Use:   "db",
 	Short: "Manage cloud databases",
 }
 
 func init() {
-	cloudCommand.AddCommand(cloudDbCmd)
+	cloudCommand.AddCommand(cloudDbCommand)
 }

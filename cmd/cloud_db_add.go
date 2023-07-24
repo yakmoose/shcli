@@ -52,7 +52,7 @@ var cloudDbAdd = &cobra.Command{
 }
 
 func init() {
-	cloudDbCmd.AddCommand(cloudDbAdd)
+	cloudDbCommand.AddCommand(cloudDbAdd)
 
 	cloudDbAdd.Flags().StringP("server", "S", "", "The server name")
 	cloudDbAdd.MarkFlagRequired("server")

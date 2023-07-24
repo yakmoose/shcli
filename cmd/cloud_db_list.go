@@ -72,7 +72,7 @@ var cloudDbListCmd = &cobra.Command{
 }
 
 func init() {
-	cloudDbCmd.AddCommand(cloudDbListCmd)
+	cloudDbCommand.AddCommand(cloudDbListCmd)
 
 	cloudDbListCmd.Flags().StringP("server", "S", "", "The server name")
 	cloudDbListCmd.Flags().StringP("host", "H", "", "The MySQL host")

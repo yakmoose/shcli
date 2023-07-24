@@ -44,7 +44,7 @@ var cloudDbGetCommand = &cobra.Command{
 }
 
 func init() {
-	cloudDbCmd.AddCommand(cloudDbGetCommand)
+	cloudDbCommand.AddCommand(cloudDbGetCommand)
 
 	cloudDbGetCommand.Flags().StringP("server", "S", "", "The server name")
 	cloudDbGetCommand.MarkFlagRequired("server")

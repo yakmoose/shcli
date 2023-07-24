@@ -56,7 +56,7 @@ var cloudDbUpdate = &cobra.Command{
 }
 
 func init() {
-	cloudDbCmd.AddCommand(cloudDbUpdate)
+	cloudDbCommand.AddCommand(cloudDbUpdate)
 
 	cloudDbUpdate.Flags().StringP("server", "S", "", "The server name")
 	cloudDbUpdate.MarkFlagRequired("server")
@@ -69,5 +69,4 @@ func init() {
 
 	cloudDbUpdate.Flags().StringP("container", "c", "", "The database backup container")
 	cloudDbUpdate.MarkFlagRequired("container")
-
 }

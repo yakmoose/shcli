@@ -37,7 +37,7 @@ var cloudDbDelete = &cobra.Command{
 }
 
 func init() {
-	cloudDbCmd.AddCommand(cloudDbDelete)
+	cloudDbCommand.AddCommand(cloudDbDelete)
 
 	cloudDbDelete.Flags().StringP("server", "S", "", "The server name")
 	cloudDbDelete.MarkFlagRequired("server")
