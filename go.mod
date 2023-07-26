@@ -1,6 +1,6 @@
 module shcli
 
-go 1.19
+go 1.20
 
 require (
 	github.com/1Password/connect-sdk-go v1.5.0
@@ -79,6 +79,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/sitehostnz/gosh => /Users/john/Projects/go/src/gosh
+replace github.com/sitehostnz/gosh => github.com/yakmoose/gosh v0.0.0-20230726213234-105f4924d002
 
-replace github.com/sitehostnz/terraform-provider-sitehost => /Users/john/Projects/go/src/terraform-provider-sitehost
+replace github.com/sitehostnz/terraform-provider-sitehost => github.com/yakmoose/terraform-provider-sitehost v0.0.0-20230726232211-7d012bf89998
