@@ -11,7 +11,9 @@ import (
 	"github.com/sitehostnz/gosh/pkg/api/job"
 	"github.com/sitehostnz/gosh/pkg/models"
 	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
+	"log"
 	"reflect"
+	"sort"
 
 	"strings"
 
@@ -34,6 +36,7 @@ var cloudDbUserDetach = &cobra.Command{
 		userClient := user.New(api)
 
 		grants := strings.Split(cmd.Flag("grants").Value.String(), ",")
+		sort.Strings(grants)
 
 		databaseListResponse, err := databaseClient.List(ctx, db.ListOptions{
 			MySQLHost:  cmd.Flag("host").Value.String(),
@@ -50,17 +53,30 @@ var cloudDbUserDetach = &cobra.Command{
 			Username:   cmd.Flag("user").Value.String(),
 		})
 
+		log.Printf("[DEBUG] Detaching user: %s with grants: %s", userResponse.User.Username, grants)
+
 		if nil != err {
 			return err
 		}
 
 		for _, database := range databaseListResponse.Return.Databases {
 
+			log.Printf("[DEBUG] Detaching user: %s from database: %s", userResponse.User.Username, database.DBName)
+
+			if !helper.Has(userResponse.User.Grants, func(g models.Grant) bool {
+				return g.DBName == database.DBName
+			}) {
+				log.Printf("[DEBUG] Skipping deatching user: %s to database: %s (grant does not exist)", userResponse.User.Username, database.DBName)
+				continue
+			}
+
 			g := helper.First(userResponse.User.Grants, func(g models.Grant) bool {
 				return g.DBName == database.DBName
 			})
+			sort.Strings(g.Grants)
 
 			if !reflect.DeepEqual(g.Grants, grants) {
+				log.Printf("[DEBUG] Skipping deatching user: %s to database: %s (%s %s)", userResponse.User.Username, database.DBName, g.Grants, grants)
 				continue
 			}
 
@@ -75,10 +91,14 @@ var cloudDbUserDetach = &cobra.Command{
 				return err
 			}
 
+			log.Printf("[DEBUG] Waiting for detaching user: %s from database: %s (grants match)", userResponse.User.Username, database.DBName)
+
 			// ideally we need/want to do these all at once, but locking and stuff...
 			helper.WaitForAction(api, job.GetRequest{JobID: deleteResponse.Return.JobID, Type: job.SchedulerType})
-		}
 
+			log.Printf("[DEBUG] detached user: %s from database: %s", userResponse.User.Username, database.DBName)
+
+		}
 		return nil
 	},
 }
@@ -97,5 +117,4 @@ func init() {
 
 	cloudDbUserDetach.Flags().StringP("grants", "g", "", "The database user")
 	cloudDbUserDetach.MarkFlagRequired("grants")
-
 }

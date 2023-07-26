@@ -22,7 +22,7 @@ var bandwidthIpAddressCmd = &cobra.Command{
 	Short: "List IP addresses",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := bandwidth.New(api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId")))
-		ipAddressesResponse, err := client.ListIpAddresses(context.Background())
+		ipAddressesResponse, err := client.ListIPAddresses(context.Background())
 		if err != nil {
 			return err
 		}

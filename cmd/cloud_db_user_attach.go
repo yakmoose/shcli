@@ -12,11 +12,11 @@ import (
 	"github.com/sitehostnz/gosh/pkg/models"
 	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
 
-	"strings"
-
 	"github.com/sitehostnz/gosh/pkg/api"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"log"
+	"strings"
 )
 
 // cloudDbUserAttach represents the domainAdd command
@@ -55,10 +55,13 @@ var cloudDbUserAttach = &cobra.Command{
 
 		for _, database := range databaseListResponse.Return.Databases {
 
+			log.Printf("[DEBUG] Attaching user: %s to database: %s", userResponse.User.Username, database.DBName)
+
 			// if the user is already attached grants, we will skip...
 			if helper.Has(userResponse.User.Grants, func(g models.Grant) bool {
 				return g.DBName == database.DBName
 			}) {
+				log.Printf("[DEBUG] Skipping attaching user: %s to database: %s (grant exists)", userResponse.User.Username, database.DBName)
 				continue
 			}
 
@@ -75,6 +78,8 @@ var cloudDbUserAttach = &cobra.Command{
 			}
 
 			// ideally we need/want to do these all at once, but locking and stuff...
+			log.Printf("[DEBUG] Waitinf for attaching user: %s to database: %s", userResponse.User.Username, database.DBName)
+
 			helper.WaitForAction(api, job.GetRequest{JobID: grantResponse.Return.JobID, Type: job.SchedulerType})
 		}
 
