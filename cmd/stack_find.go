@@ -31,7 +31,7 @@ func formatStackOutput(format string, stack models.Stack) error {
 		fmt.Println(string(json))
 	} else if format == "text" {
 
-		pattern := "'VIRTUAL_HOST=(.*)'"
+		pattern := "VIRTUAL_HOST=(.*)"
 
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 4, 4, ' ', 1)
@@ -56,40 +56,43 @@ func formatStackOutput(format string, stack models.Stack) error {
 	return nil
 }
 
-// listCmd represents the list command
-var findStack = &cobra.Command{
+// findStackCommand represents the list command
+var findStackCommand = &cobra.Command{
 	Use:   "find",
 	Short: "Find a stack",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId"))
-		stackServerClient := stackserver.New(client)
+		stackServerClient := server.New(client)
 		stackClient := stack.New(client)
+		hostPattern := cmd.Flag("host-pattern").Value.String()
 
-		stackServers, err := stackServerClient.List(context.Background())
+		stackServersResponse, err := stackServerClient.List(context.Background())
 		if err != nil {
 			return err
 		}
 
-		pattern := "'VIRTUAL_HOST=.*(" + regexp.QuoteMeta(args[0]) + ").*'"
+		pattern := regexp.QuoteMeta(hostPattern)
 		expr, _ := regexp.Compile(pattern)
 
-		for _, ss := range *stackServers {
-			stacks, err := stackClient.List(context.Background(), stack.ListRequest{ServerName: ss.Name})
+		for _, ss := range stackServersResponse.CloudServers {
+			stackResponse, err := stackClient.List(context.Background(), stack.ListRequest{ServerName: ss.Name})
 			if err != nil {
 				return err
 			}
 
-			for _, s := range *stacks {
+			for _, s := range stackResponse.Return.Stacks {
 				// check the name,
-				if s.Name == args[0] || s.Label == args[0] {
-					return formatStackOutput(cmd.Flag("format").Value.String(), s)
+				if s.Name == hostPattern || s.Label == hostPattern {
+					formatStackOutput(cmd.Flag("format").Value.String(), s)
+					continue
 				}
 
 				// then check the aliases/vhost stuff
-				// get the virual host and split
+				// get the virtual host and split
 				m := expr.Match([]byte(s.DockerFile))
 				if m {
-					return formatStackOutput(cmd.Flag("format").Value.String(), s)
+					formatStackOutput(cmd.Flag("format").Value.String(), s)
+					continue
 				}
 
 			}
@@ -100,5 +103,8 @@ var findStack = &cobra.Command{
 }
 
 func init() {
-	stackCommand.AddCommand(findStack)
+	stackCommand.AddCommand(findStackCommand)
+
+	findStackCommand.Flags().StringP("host-pattern", "p", "", "The host name to look for")
+	findStackCommand.MarkFlagRequired("host-pattern")
 }

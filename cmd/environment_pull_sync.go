@@ -5,10 +5,7 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
-	"io"
-	"os"
-
+	"github.com/1Password/connect-sdk-go/connect"
 	"github.com/sitehostnz/gosh/pkg/api"
 	"github.com/sitehostnz/gosh/pkg/api/cloud/stack/environment"
 	"github.com/sitehostnz/gosh/pkg/api/job"
@@ -16,12 +13,14 @@ import (
 	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/yakmoose/envop/service"
+	"strings"
 )
 
-// getCmd represents the get command
-var environmentUpdateCmd = &cobra.Command{
-	Use:   "update",
-	Short: "Update the stack environment",
+// environmentPullCmd represents the get command
+var environmentPullCmd = &cobra.Command{
+	Use:   "pull",
+	Short: "Pull environment/item from 1Password and push it to Sitehost",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		api := api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId"))
 		client := environment.New(api)
@@ -29,32 +28,33 @@ var environmentUpdateCmd = &cobra.Command{
 		serverName := cmd.Flag("server").Value.String()
 		stackName := cmd.Flag("stack").Value.String()
 		serviceName := cmd.Flag("service").Value.String()
-		fileName := cmd.Flag("file").Value.String()
+		vaultName := cmd.Flag("vault").Value.String()
+		itemName := cmd.Flag("item").Value.String()
 
 		if "" == serviceName {
 			serviceName = stackName
 		}
 
-		var fd *os.File
-		var err error
-		if len(fileName) > 0 {
-			fd, err = os.Open(fileName)
-			if nil != err {
-				return err
-			}
-		} else {
-			fd = os.Stdin
+		opClient, err := connect.NewClientFromEnvironment()
+		if err != nil {
+			return err
 		}
 
-		data, err := io.ReadAll(fd)
+		item, err := service.Get1PasswordItem(opClient, vaultName, itemName)
 		if err != nil {
 			return err
 		}
 
 		var settings []models.EnvironmentVariable
-		err = json.Unmarshal(data, &settings)
-		if err != nil {
-			return err
+
+		for _, v := range item.Fields {
+			if v.Value == "" {
+				continue
+			}
+			settings = append(settings, models.EnvironmentVariable{
+				Name:    strings.ToUpper(v.Label),
+				Content: v.Value,
+			})
 		}
 
 		response, err := client.Update(context.Background(), environment.UpdateRequest{
@@ -74,6 +74,5 @@ var environmentUpdateCmd = &cobra.Command{
 }
 
 func init() {
-	environmentCmd.AddCommand(environmentUpdateCmd)
-	environmentUpdateCmd.Flags().StringP("file", "F", "", "The settings json file to use")
+	environmentOpCmd.AddCommand(environmentPullCmd)
 }
