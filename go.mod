@@ -3,7 +3,7 @@ module shcli
 go 1.20
 
 require (
-	github.com/1Password/connect-sdk-go v1.5.0
+	github.com/1Password/connect-sdk-go v1.5.3
 	github.com/sitehostnz/gosh v0.3.2
 	github.com/sitehostnz/terraform-provider-sitehost v1.0.1
 	github.com/spf13/cobra v1.6.1
