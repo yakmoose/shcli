@@ -6,7 +6,7 @@ require (
 	github.com/1Password/connect-sdk-go v1.5.0
 	github.com/sitehostnz/gosh v0.3.2
 	github.com/sitehostnz/terraform-provider-sitehost v1.0.1
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.15.0
 	github.com/yakmoose/envop v0.1.0
@@ -42,7 +42,7 @@ require (
 	github.com/hashicorp/terraform-registry-address v0.0.0-20220422185603-6772e136ec01 // indirect
 	github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734 // indirect
 	github.com/hashicorp/yamux v0.0.0-20211028200310-0bc27b27de87 // indirect
-	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
