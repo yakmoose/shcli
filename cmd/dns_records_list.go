@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/sitehostnz/gosh/pkg/models"
 	"github.com/sitehostnz/gosh/pkg/utils"
+	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
 	"os"
 	"text/tabwriter"
 
@@ -29,6 +31,13 @@ var listRecordsCmd = &cobra.Command{
 		}
 
 		format := cmd.Flag("format").Value.String()
+
+		if cmd.Flag("rr_type") != nil {
+			rrType := cmd.Flag("rr_type").Value.String()
+			records.Return = helper.Filter(records.Return, func(record models.DNSRecord) bool {
+				return record.Type == rrType
+			})
+		}
 
 		if format == "json" {
 			json, err := json.MarshalIndent(records, "", "  ")
@@ -55,4 +64,6 @@ var listRecordsCmd = &cobra.Command{
 
 func init() {
 	recordCmd.AddCommand(listRecordsCmd)
+	listRecordsCmd.Flags().StringP("rr_type", "t", "", "Filter record RR types")
+
 }
