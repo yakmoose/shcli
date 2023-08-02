@@ -79,6 +79,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/sitehostnz/gosh => github.com/yakmoose/gosh v0.0.0-20230726213234-105f4924d002
+replace github.com/sitehostnz/gosh => github.com/yakmoose/gosh v0.0.0-20230802000957-ba74e1992d7b
 
 replace github.com/sitehostnz/terraform-provider-sitehost => github.com/yakmoose/terraform-provider-sitehost v0.0.0-20230726232211-7d012bf89998

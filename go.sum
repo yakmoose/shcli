@@ -343,8 +343,8 @@ github.com/xanzy/ssh-agent v0.3.0 h1:wUMzuKtKilRgBAD1sUb8gOwwRr2FGoBVumcjoOACClI
 github.com/xanzy/ssh-agent v0.3.0/go.mod h1:3s9xbODqPuuhK9JV1R321M/FlMZSBvE5aY6eAcqrDh0=
 github.com/yakmoose/envop v0.1.0 h1:qyk71Me3DonAZr4PMvW/5MtPffX2ebBv+dR5V1uRYW0=
 github.com/yakmoose/envop v0.1.0/go.mod h1:+Qa2O+REm6X9em6v3TXJjNMf7Mm7iQwYL3cgY6kmRfg=
-github.com/yakmoose/gosh v0.0.0-20230726213234-105f4924d002 h1:bp7bVoXNy/O35kmFWiDt3lUUZij9PQr2uuykBIs7mvM=
-github.com/yakmoose/gosh v0.0.0-20230726213234-105f4924d002/go.mod h1:dra8Cc6DfQU2NNzdFf0ObgZhvFdn9Pifq2FiPqEw/ls=
+github.com/yakmoose/gosh v0.0.0-20230802000957-ba74e1992d7b h1:CTxnDfj6/m56ZvsonMMhOpimfRECbq7XiwzZnHTD67o=
+github.com/yakmoose/gosh v0.0.0-20230802000957-ba74e1992d7b/go.mod h1:dra8Cc6DfQU2NNzdFf0ObgZhvFdn9Pifq2FiPqEw/ls=
 github.com/yakmoose/terraform-provider-sitehost v0.0.0-20230726232211-7d012bf89998 h1:zKqgsxpxvDiAjGGPphhrG09FWr8VE6KRJ60S/QTpU2w=
 github.com/yakmoose/terraform-provider-sitehost v0.0.0-20230726232211-7d012bf89998/go.mod h1:TOGHP25uIMn7q6puEXjW4UZTkUoSIEJ6/tLrJgfzgVE=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
