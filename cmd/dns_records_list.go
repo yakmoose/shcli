@@ -32,7 +32,7 @@ var listRecordsCmd = &cobra.Command{
 
 		format := cmd.Flag("format").Value.String()
 
-		if cmd.Flag("rr_type") != nil {
+		if cmd.Flag("rr_type").Value.String() != "" {
 			rrType := cmd.Flag("rr_type").Value.String()
 			records.Return = helper.Filter(records.Return, func(record models.DNSRecord) bool {
 				return record.Type == rrType

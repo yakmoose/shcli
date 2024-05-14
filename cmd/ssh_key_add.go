@@ -43,7 +43,7 @@ var addKeyCmd = &cobra.Command{
 		keyClient := key.New(client)
 
 		// 1. is the server a stack server? best check
-		keyResponse, err := keyClient.Add(context.Background(), key.AddRequest{Content: string(keyFile), Label: label})
+		keyResponse, err := keyClient.Create(context.Background(), key.CreateRequest{Content: string(keyFile), Label: label})
 		if err != nil {
 			return err
 		}
