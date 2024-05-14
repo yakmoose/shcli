@@ -22,7 +22,7 @@ var removeKeyCmd = &cobra.Command{
 
 		keyID := cmd.Flag("keyid").Value.String()
 
-		keyResponse, err := client.Remove(context.Background(), key.RemoveRequest{ID: keyID})
+		keyResponse, err := client.Delete(context.Background(), key.DeleteRequest{ID: keyID})
 		if err != nil {
 			return err
 		}

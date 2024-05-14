@@ -62,5 +62,4 @@ func init() {
 	cloudSSHUserCmd.AddCommand(cloudSSHUserList)
 	cloudSSHUserList.Flags().StringP("server", "S", "", "The server name")
 	cloudSSHUserList.Flags().StringP("username", "U", "", "The username")
-
 }
