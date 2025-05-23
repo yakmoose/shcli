@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"context"
-	"github.com/1Password/connect-sdk-go/connect"
 	"github.com/sitehostnz/gosh/pkg/api"
 	"github.com/sitehostnz/gosh/pkg/api/cloud/stack/environment"
 	"github.com/sitehostnz/gosh/pkg/api/job"
@@ -35,12 +34,17 @@ var environmentPullCmd = &cobra.Command{
 			serviceName = stackName
 		}
 
-		opClient, err := connect.NewClientFromEnvironment()
+		token, err := cmd.Flags().GetString("service-account")
 		if err != nil {
 			return err
 		}
 
-		item, err := service.Get1PasswordItem(opClient, vaultName, itemName)
+		op, err := service.NewClientFromToken(token)
+		if err != nil {
+			return err
+		}
+
+		item, err := service.Get1PasswordItem(op, vaultName, itemName)
 		if err != nil {
 			return err
 		}
@@ -52,7 +56,7 @@ var environmentPullCmd = &cobra.Command{
 				continue
 			}
 			settings = append(settings, models.EnvironmentVariable{
-				Name:    strings.ToUpper(v.Label),
+				Name:    strings.ToUpper(v.Title),
 				Content: v.Value,
 			})
 		}
