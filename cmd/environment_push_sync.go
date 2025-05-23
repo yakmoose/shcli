@@ -6,7 +6,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/1Password/connect-sdk-go/connect"
 	"github.com/sitehostnz/gosh/pkg/api"
 	"github.com/sitehostnz/gosh/pkg/api/cloud/stack/environment"
 	"github.com/spf13/cobra"
@@ -27,14 +26,10 @@ var environmentPushCmd = &cobra.Command{
 		serviceName := cmd.Flag("service").Value.String()
 		vaultName := cmd.Flag("vault").Value.String()
 		itemName := cmd.Flag("item").Value.String()
+		sectionName := cmd.Flag("section").Value.String()
 
 		if "" == serviceName {
 			serviceName = stackName
-		}
-
-		opClient, err := connect.NewClientFromEnvironment()
-		if err != nil {
-			return err
 		}
 
 		response, err := client.Get(context.Background(), environment.GetRequest{
@@ -52,7 +47,17 @@ var environmentPushCmd = &cobra.Command{
 			environment[v.Name] = v.Content
 		}
 
-		item, err := service.Create1PasswordItem(opClient, vaultName, itemName, environment)
+		token, err := cmd.Flags().GetString("service-account")
+		if err != nil {
+			return err
+		}
+
+		op, err := service.NewClientFromToken(token)
+		if err != nil {
+			return err
+		}
+
+		item, err := service.Create1PasswordItem(op, vaultName, itemName, sectionName, environment)
 
 		if err != nil {
 			return err
@@ -67,9 +72,6 @@ var environmentPushCmd = &cobra.Command{
 func init() {
 	environmentOpCmd.AddCommand(environmentPushCmd)
 
-	environmentPullCmd.Flags().StringP("vault", "V", "", "The 1password vault")
-	environmentPullCmd.MarkFlagRequired("vault")
-
-	environmentPullCmd.Flags().String("item", "i", "The name of the item to save")
-	environmentPullCmd.MarkFlagRequired("item")
+	environmentPushCmd.Flags().String("section", "", "The name of the item section")
+	environmentPushCmd.MarkFlagRequired("section")
 }

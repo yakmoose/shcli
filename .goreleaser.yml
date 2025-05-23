@@ -1,3 +1,4 @@
+version: 2
 before:
   hooks:
     - go mod download
@@ -8,6 +9,9 @@ builds:
       - linux
       - windows
       - darwin
+    goarch:
+      - arm64
+      - amd64
 archives:
   - format: binary
 checksum:
@@ -15,4 +19,4 @@ checksum:
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
-  skip: true
+  disable: true

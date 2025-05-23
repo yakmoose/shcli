@@ -4,10 +4,11 @@ Copyright © 2022 John Lennard <john@yakmoo.se>
 package cmd
 
 import (
+	"github.com/spf13/pflag"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
@@ -47,19 +48,22 @@ func initConfig() {
 		viper.SetConfigName(".shcli.json")
 	}
 
+	viper.SetEnvKeyReplacer(strings.NewReplacer("SERVICE-ACCOUNT", "OP_SERVICE_ACCOUNT_TOKEN"))
 	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err == nil {
-		rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) {
-			// Determine the naming convention of the flags when represented in the config file
-			configName := f.Name
-
-			// Apply the viper config value to the flag when the flag is not set and viper has a value
-			if !f.Changed && viper.IsSet(configName) {
-				rootCmd.PersistentFlags().Set(f.Name, viper.GetString(configName))
-			}
-		})
+	
+	if err := viper.ReadInConfig(); err != nil {
+		// panic(err)
 	}
+
+	rootCmd.PersistentFlags().VisitAll(func(f *pflag.Flag) {
+		// Determine the naming convention of the flags when represented in the config file
+		configName := f.Name
+
+		// Apply the viper config value to the flag when the flag is not set and viper has a value
+		if !f.Changed && viper.IsSet(configName) {
+			rootCmd.PersistentFlags().Set(f.Name, viper.GetString(configName))
+		}
+	})
 }
 
 func init() {
