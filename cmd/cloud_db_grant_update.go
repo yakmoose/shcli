@@ -38,7 +38,8 @@ var cloudDbGrantUpdateCommand = &cobra.Command{
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: updateResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: updateResponse.Return.Job.ID, Type: updateResponse.Return.Job.Type})
+
 	},
 }
 

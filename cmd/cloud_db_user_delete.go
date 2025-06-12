@@ -30,12 +30,12 @@ var cloudDbUserDeleteCommand = &cobra.Command{
 			Username:   cmd.Flag("user").Value.String(),
 		}
 
-		deleteResponse, err := userClient.Delete(ctx, deleteRequest)
+		response, err := userClient.Delete(ctx, deleteRequest)
 		if nil != err {
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: deleteResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 	},
 }
 

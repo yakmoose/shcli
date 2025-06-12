@@ -65,7 +65,7 @@ var cloudDbUserAttach = &cobra.Command{
 				continue
 			}
 
-			grantResponse, err := grantClient.Add(ctx, grant.AddRequest{
+			response, err := grantClient.Add(ctx, grant.AddRequest{
 				MySQLHost:  cmd.Flag("host").Value.String(),
 				ServerName: cmd.Flag("server").Value.String(),
 				Username:   cmd.Flag("user").Value.String(),
@@ -80,7 +80,7 @@ var cloudDbUserAttach = &cobra.Command{
 			// ideally we need/want to do these all at once, but locking and stuff...
 			log.Printf("[DEBUG] Waitinf for attaching user: %s to database: %s", userResponse.User.Username, database.DBName)
 
-			helper.WaitForAction(api, job.GetRequest{JobID: grantResponse.Return.JobID, Type: job.SchedulerType})
+			return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 		}
 
 		return nil

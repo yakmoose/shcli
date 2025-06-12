@@ -35,7 +35,8 @@ var cloudDbGrantDeleteCommand = &cobra.Command{
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: deleteResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: deleteResponse.Return.Job.ID, Type: deleteResponse.Return.Job.Type})
+
 	},
 }
 

@@ -72,7 +72,7 @@ var environmentPullCmd = &cobra.Command{
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: response.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 
 	},
 }

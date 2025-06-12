@@ -46,12 +46,15 @@ var environmentUpdateCmd = &cobra.Command{
 			fd = os.Stdin
 		}
 
+		//
+
 		data, err := io.ReadAll(fd)
 		if err != nil {
 			return err
 		}
 
 		var settings []models.EnvironmentVariable
+
 		err = json.Unmarshal(data, &settings)
 		if err != nil {
 			return err
@@ -68,7 +71,7 @@ var environmentUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: response.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 
 	},
 }

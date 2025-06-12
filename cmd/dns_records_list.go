@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sitehostnz/gosh/pkg/models"
-	"github.com/sitehostnz/gosh/pkg/utils"
+	"github.com/sitehostnz/gosh/pkg/net"
 	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
 	"os"
 	"text/tabwriter"
@@ -50,7 +50,7 @@ var listRecordsCmd = &cobra.Command{
 			w.Init(os.Stdout, 0, 4, 4, ' ', 0)
 			fmt.Fprintln(w, "Id\tDomain\tName\tType\tPriority\tValue")
 			for _, record := range records.Return {
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n", record.ID, record.Domain, utils.DeconstructFqdn(record.Name, record.Domain), record.Type, record.Priority, record.Content)
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n", record.ID, record.Domain, net.DeconstructFqdn(record.Name, record.Domain), record.Type, record.Priority, record.Content)
 			}
 
 			fmt.Fprintln(w)

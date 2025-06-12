@@ -27,12 +27,12 @@ var cloudDbDelete = &cobra.Command{
 		serverName := cmd.Flag("server").Value.String()
 		host := cmd.Flag("host").Value.String()
 
-		dbDeleteResponse, err := client.Delete(ctx, db.DeleteRequest{Database: database, MySQLHost: host, ServerName: serverName})
+		response, err := client.Delete(ctx, db.DeleteRequest{Database: database, MySQLHost: host, ServerName: serverName})
 		if err != nil {
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: dbDeleteResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 	},
 }
 

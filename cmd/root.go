@@ -50,7 +50,7 @@ func initConfig() {
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer("SERVICE-ACCOUNT", "OP_SERVICE_ACCOUNT_TOKEN"))
 	viper.AutomaticEnv()
-	
+
 	if err := viper.ReadInConfig(); err != nil {
 		// panic(err)
 	}

@@ -80,7 +80,7 @@ var cloudDbUserDetach = &cobra.Command{
 				continue
 			}
 
-			deleteResponse, err := grantClient.Delete(ctx, grant.DeleteRequest{
+			response, err := grantClient.Delete(ctx, grant.DeleteRequest{
 				MySQLHost:  cmd.Flag("host").Value.String(),
 				ServerName: cmd.Flag("server").Value.String(),
 				Username:   cmd.Flag("user").Value.String(),
@@ -94,9 +94,7 @@ var cloudDbUserDetach = &cobra.Command{
 			log.Printf("[DEBUG] Waiting for detaching user: %s from database: %s (grants match)", userResponse.User.Username, database.DBName)
 
 			// ideally we need/want to do these all at once, but locking and stuff...
-			helper.WaitForAction(api, job.GetRequest{JobID: deleteResponse.Return.JobID, Type: job.SchedulerType})
-
-			log.Printf("[DEBUG] detached user: %s from database: %s", userResponse.User.Username, database.DBName)
+			return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 
 		}
 		return nil

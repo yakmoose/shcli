@@ -35,12 +35,12 @@ var cloudDbUserAddCommand = &cobra.Command{
 			Password:   cmd.Flag("password").Value.String(),
 		}
 
-		userAddResponse, err := userClient.Add(ctx, addRequest)
+		response, err := userClient.Add(ctx, addRequest)
 		if nil != err {
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: userAddResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: response.Return.Job.ID, Type: response.Return.Job.Type})
 	},
 }
 

@@ -47,7 +47,7 @@ var cloudDbAdd = &cobra.Command{
 			return err
 		}
 
-		return helper.WaitForAction(api, job.GetRequest{JobID: dbAddResponse.Return.JobID, Type: job.SchedulerType})
+		return helper.WaitForAction(api, job.GetRequest{ID: dbAddResponse.Return.Job.ID, Type: dbAddResponse.Return.Job.Type})
 	},
 }
 
