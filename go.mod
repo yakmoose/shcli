@@ -3,7 +3,7 @@ module shcli
 go 1.24.4
 
 require (
-	github.com/sitehostnz/gosh v0.5.0
+	github.com/sitehostnz/gosh v0.6.0
 	github.com/sitehostnz/terraform-provider-sitehost v1.3.0
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
@@ -40,9 +40,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// local dev..
-replace github.com/sitehostnz/terraform-provider-sitehost => /Users/john/Projects/go/src/terraform-provider-sitehost
-
-replace github.com/sitehostnz/gosh => /Users/john/Projects/go/src/gosh
-
-replace github.com/yakmoose/envop => /Users/john/Projects/go/src/envop
+//// local dev..
+//replace github.com/sitehostnz/terraform-provider-sitehost => /Users/john/Projects/go/src/terraform-provider-sitehost
+//replace github.com/sitehostnz/gosh => /Users/john/Projects/go/src/gosh
+//replace github.com/yakmoose/envop => /Users/john/Projects/go/src/envop
