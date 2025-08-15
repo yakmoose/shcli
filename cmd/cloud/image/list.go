@@ -1,35 +1,35 @@
-package dns
+package image
 
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"text/tabwriter"
 
+	"errors"
+
 	"github.com/sitehostnz/gosh/pkg/api"
-	goshDns "github.com/sitehostnz/gosh/pkg/api/dns"
+	"github.com/sitehostnz/gosh/pkg/api/cloud/image"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List zones records",
+	Use:   "ls",
+	Short: "List images",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		client := goshDns.New(api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId")))
+		client := image.New(api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId")))
 
-		zoneResponse, err := client.ListZones(context.Background(), &goshDns.ListZoneOptions{})
+		imageResponse, err := client.List(context.Background())
 		if err != nil {
 			return err
 		}
 
 		format := cmd.Flag("format").Value.String()
-
 		if format == "json" {
-			json, err := json.MarshalIndent(zoneResponse.Return.Data, "", "  ")
+			json, err := json.MarshalIndent(imageResponse.Return.Images, "", "  ")
 			if err != nil {
 				return err
 			}
@@ -37,18 +37,17 @@ var listCmd = &cobra.Command{
 		} else if format == "text" {
 			w := new(tabwriter.Writer)
 			w.Init(os.Stdout, 0, 4, 4, ' ', 0)
-			fmt.Fprintln(w, "Domain")
-			for _, zone := range zoneResponse.Return.Data {
-				fmt.Fprintln(w, zone.Name)
+			fmt.Fprintln(w, "Image Id\tImage Label\tImage Code\tVersion Count\tContainer Count")
+			for _, image := range imageResponse.Return.Images {
+				fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%d\n", image.ID, image.Label, image.Code, image.VersionCount, image.ContainerCount)
 			}
 
 			fmt.Fprintln(w)
 		} else {
+			/// how to error out.
 			return errors.New("unsupported format, please choose text or json")
 		}
 
 		return nil
 	},
 }
-
-func init() {}

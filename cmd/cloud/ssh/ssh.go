@@ -1,6 +1,8 @@
 package ssh
 
 import (
+	"shcli/cmd/cloud/ssh/user"
+
 	"github.com/spf13/cobra"
 )
 
@@ -11,5 +13,5 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(userCmd)
+	Cmd.AddCommand(user.Cmd)
 }

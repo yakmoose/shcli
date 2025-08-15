@@ -15,7 +15,7 @@ import (
 )
 
 // getCmd represents the get command
-var environmentGetCmd = &cobra.Command{
+var getCmd = &cobra.Command{
 	Use:   "get",
 	Short: "Get the stack environment",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -62,8 +62,4 @@ var environmentGetCmd = &cobra.Command{
 
 		return nil
 	},
-}
-
-func init() {
-	EnvironmentCmd.AddCommand(environmentGetCmd)
 }

@@ -14,10 +14,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-// getCmd represents the get command
-var environmentUpdateCmd = &cobra.Command{
+// updateCmd represents the get command
+var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "Update the stack environment",
+	Short: "Update the stack environment with the supplied environment variables",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		api := api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId"))
 		client := environment.New(api)
@@ -42,8 +42,6 @@ var environmentUpdateCmd = &cobra.Command{
 			fd = os.Stdin
 		}
 
-		//
-
 		data, err := io.ReadAll(fd)
 		if err != nil {
 			return err
@@ -56,7 +54,7 @@ var environmentUpdateCmd = &cobra.Command{
 			return err
 		}
 
-		response, err := client.Update(context.Background(), environment.UpdateRequest{
+		response, err := client.Delete(context.Background(), environment.DeleteRequest{
 			ServerName:           serverName,
 			Project:              stackName,
 			Service:              serviceName,
@@ -73,6 +71,5 @@ var environmentUpdateCmd = &cobra.Command{
 }
 
 func init() {
-	EnvironmentCmd.AddCommand(environmentUpdateCmd)
-	environmentUpdateCmd.Flags().StringP("file", "F", "", "The settings json file to use")
+	updateCmd.Flags().StringP("file", "F", "", "The settings json file to use")
 }

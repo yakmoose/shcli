@@ -11,6 +11,7 @@ import (
 	"shcli/cmd/dns"
 	"shcli/cmd/job"
 	"shcli/cmd/server"
+	"shcli/cmd/srs"
 	"shcli/cmd/ssh"
 	"strings"
 
@@ -99,4 +100,6 @@ func init() {
 	rootCmd.AddCommand(server.Cmd)
 	rootCmd.AddCommand(job.Cmd)
 	rootCmd.AddCommand(bandwidth.Cmd)
+
+	rootCmd.AddCommand(srs.Cmd)
 }

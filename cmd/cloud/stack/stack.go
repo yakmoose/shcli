@@ -13,7 +13,7 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(environment.EnvironmentCmd)
+	Cmd.AddCommand(environment.Cmd)
 
 	Cmd.AddCommand(addCmd)
 	Cmd.AddCommand(findCmd)

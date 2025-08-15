@@ -1,13 +1,12 @@
-package image
+package contacts
 
 import (
 	"github.com/spf13/cobra"
 )
 
-// Cmd represents the stacks command
 var Cmd = &cobra.Command{
-	Use:   "image",
-	Short: "Manage cloud images",
+	Use:   "contact",
+	Short: "Commands managing domain name contacts",
 }
 
 func init() {

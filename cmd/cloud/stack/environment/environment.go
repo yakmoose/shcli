@@ -1,22 +1,30 @@
 package environment
 
 import (
+	onepassword "shcli/cmd/cloud/stack/environment/op"
+
 	"github.com/spf13/cobra"
 )
 
-// EnvironmentCmd represents the domain command
-var EnvironmentCmd = &cobra.Command{
+// Cmd represents the domain command
+var Cmd = &cobra.Command{
 	Use:   "env",
 	Short: "Commands for managing stack environment variables",
 }
 
 func init() {
 
-	EnvironmentCmd.PersistentFlags().StringP("server", "S", "", "The server name to fetch the stack list from")
-	EnvironmentCmd.MarkPersistentFlagRequired("server")
+	Cmd.AddCommand(onepassword.Cmd)
 
-	EnvironmentCmd.PersistentFlags().StringP("stack", "s", "", "The project/stack to get")
-	EnvironmentCmd.MarkPersistentFlagRequired("stack")
+	Cmd.AddCommand(getCmd)
+	Cmd.AddCommand(updateCmd)
+	Cmd.AddCommand(rmCmd)
 
-	EnvironmentCmd.PersistentFlags().StringP("service", "", "", "The service/container to get")
+	Cmd.PersistentFlags().StringP("server", "S", "", "The server name to fetch the stack list from")
+	Cmd.MarkPersistentFlagRequired("server")
+
+	Cmd.PersistentFlags().StringP("stack", "s", "", "The project/stack to get")
+	Cmd.MarkPersistentFlagRequired("stack")
+
+	Cmd.PersistentFlags().StringP("service", "", "", "The service/container to get")
 }

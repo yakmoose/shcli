@@ -16,8 +16,8 @@ import (
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List cloud servers",
+	Use:   "ls",
+	Short: "List  cloud servers",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		client := server.New(api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId")))
 		serversResponse, err := client.List(context.Background())

@@ -1,4 +1,4 @@
-package environment
+package onepassword
 
 import (
 	"context"
@@ -11,8 +11,8 @@ import (
 	"github.com/yakmoose/envop/service"
 )
 
-// environmentPushCmd represents the get command
-var environmentPushCmd = &cobra.Command{
+// pushCmd represents the get command
+var pushCmd = &cobra.Command{
 	Use:   "push",
 	Short: "Push environment to 1Password from Sitehost, creating a new password item",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -68,8 +68,8 @@ var environmentPushCmd = &cobra.Command{
 }
 
 func init() {
-	environmentOpCmd.AddCommand(environmentPushCmd)
+	Cmd.AddCommand(pushCmd)
 
-	environmentPushCmd.Flags().String("section", "", "The name of the item section")
-	environmentPushCmd.MarkFlagRequired("section")
+	pushCmd.Flags().String("section", "", "The name of the item section")
+	pushCmd.MarkFlagRequired("section")
 }

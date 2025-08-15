@@ -2,7 +2,9 @@ package environment
 
 import (
 	"context"
-	"strings"
+	"encoding/json"
+	"io"
+	"os"
 
 	"github.com/sitehostnz/gosh/pkg/api"
 	"github.com/sitehostnz/gosh/pkg/api/cloud/stack/environment"
@@ -10,13 +12,12 @@ import (
 	"github.com/sitehostnz/terraform-provider-sitehost/sitehost/helper"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/yakmoose/envop/service"
 )
 
-// environmentPullCmd represents the get command
-var environmentPullCmd = &cobra.Command{
-	Use:   "pull",
-	Short: "Pull environment/item from 1Password and push it to Sitehost",
+// rmCmd represents the get command
+var rmCmd = &cobra.Command{
+	Use:   "rm",
+	Short: "Deletes the supplied variables from the stack environment",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		api := api.NewClient(viper.GetString("apiKey"), viper.GetString("clientId"))
 		client := environment.New(api)
@@ -24,41 +25,38 @@ var environmentPullCmd = &cobra.Command{
 		serverName := cmd.Flag("server").Value.String()
 		stackName := cmd.Flag("stack").Value.String()
 		serviceName := cmd.Flag("service").Value.String()
-		vaultName := cmd.Flag("vault").Value.String()
-		itemName := cmd.Flag("item").Value.String()
+		fileName := cmd.Flag("file").Value.String()
 
 		if "" == serviceName {
 			serviceName = stackName
 		}
 
-		token, err := cmd.Flags().GetString("service-account")
-		if err != nil {
-			return err
+		var fd *os.File
+		var err error
+		if len(fileName) > 0 {
+			fd, err = os.Open(fileName)
+			if nil != err {
+				return err
+			}
+		} else {
+			fd = os.Stdin
 		}
 
-		op, err := service.NewClientFromToken(token)
-		if err != nil {
-			return err
-		}
+		//
 
-		item, err := service.Get1PasswordItem(op, vaultName, itemName)
+		data, err := io.ReadAll(fd)
 		if err != nil {
 			return err
 		}
 
 		var settings []models.EnvironmentVariable
 
-		for _, v := range item.Fields {
-			if v.Value == "" {
-				continue
-			}
-			settings = append(settings, models.EnvironmentVariable{
-				Name:    strings.ToUpper(v.Title),
-				Content: v.Value,
-			})
+		err = json.Unmarshal(data, &settings)
+		if err != nil {
+			return err
 		}
 
-		response, err := client.Update(context.Background(), environment.UpdateRequest{
+		response, err := client.Delete(context.Background(), environment.DeleteRequest{
 			ServerName:           serverName,
 			Project:              stackName,
 			Service:              serviceName,
@@ -75,5 +73,5 @@ var environmentPullCmd = &cobra.Command{
 }
 
 func init() {
-	environmentOpCmd.AddCommand(environmentPullCmd)
+	rmCmd.Flags().StringP("file", "F", "", "The settings json file to use")
 }
