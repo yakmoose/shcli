@@ -10,8 +10,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-// deleteCmd drops/deletes the grants for a user
-var deleteCmd = &cobra.Command{
+// rmCmd drops/deletes the grants for a user
+var rmCmd = &cobra.Command{
 	Use:   "drop",
 	Short: "drop the user grants",
 	RunE: func(cmd *cobra.Command, args []string) error {

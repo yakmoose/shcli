@@ -9,8 +9,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-// deleteCmd represents the domainAdd command
-var deleteCmd = &cobra.Command{
+// rmCmd represents the domainAdd command
+var rmCmd = &cobra.Command{
 	Use:   "rm",
 	Short: "remove a domain name",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -37,6 +37,6 @@ var deleteCmd = &cobra.Command{
 
 func init() {
 
-	deleteCmd.Flags().StringP("domain", "d", "", "The domain name to use")
-	deleteCmd.MarkFlagRequired("domain")
+	rmCmd.Flags().StringP("domain", "d", "", "The domain name to use")
+	rmCmd.MarkFlagRequired("domain")
 }

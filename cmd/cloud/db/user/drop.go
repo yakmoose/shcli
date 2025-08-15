@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-// deleteCmd represents the domainAdd command
-var deleteCmd = &cobra.Command{
+// dropCmd represents the domainAdd command
+var dropCmd = &cobra.Command{
 	Use:   "drop",
 	Short: "Remove a database user",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -37,12 +37,12 @@ var deleteCmd = &cobra.Command{
 }
 
 func init() {
-	deleteCmd.Flags().StringP("server", "S", "", "The server name")
-	deleteCmd.MarkFlagRequired("server")
+	dropCmd.Flags().StringP("server", "S", "", "The server name")
+	dropCmd.MarkFlagRequired("server")
 
-	deleteCmd.Flags().StringP("host", "H", "", "The database host")
-	deleteCmd.MarkFlagRequired("host")
+	dropCmd.Flags().StringP("host", "H", "", "The database host")
+	dropCmd.MarkFlagRequired("host")
 
-	deleteCmd.Flags().StringP("user", "U", "", "The database user")
-	deleteCmd.MarkFlagRequired("user")
+	dropCmd.Flags().StringP("user", "U", "", "The database user")
+	dropCmd.MarkFlagRequired("user")
 }
