@@ -12,11 +12,17 @@ jobs:
     permissions:
       contents: write
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v4
+      -
+        name: Checkout gosh
+        uses: actions/checkout@v4 # Use the latest version
+        with:
+          repository: yakmoose/gosh # Replace with the actual owner and repository name
+          path: ./gosh
       -
         name: Set up Go
         uses: actions/setup-go@v5

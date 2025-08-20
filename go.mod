@@ -91,3 +91,5 @@ require (
 //replace github.com/sitehostnz/terraform-provider-sitehost => /Users/john/Projects/go/src/terraform-provider-sitehost
 //replace github.com/sitehostnz/gosh => /Users/john/Projects/go/src/gosh
 //replace github.com/yakmoose/envop => /Users/john/Projects/go/src/envop
+
+replace github.com/sitehostnz/gosh => ./gosh
