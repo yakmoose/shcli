@@ -3,6 +3,7 @@ before:
   hooks:
     - go mod download
     - go mod edit -replace github.com/sitehostnz/gosh=./gosh
+    - go mod edit -replace github.com/sitehostnz/terraform-provider-sitehost=./terraform-provider-sitehost
 builds:
   - env:
       - CGO_ENABLED=0

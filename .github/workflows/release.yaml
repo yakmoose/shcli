@@ -1,4 +1,4 @@
-name: Release
+name: Build release
 
 on:
   release:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   releaser:
-    name: Release
+    name: Build release
 
     permissions:
       contents: write
@@ -23,6 +23,12 @@ jobs:
         with:
           repository: yakmoose/gosh # Replace with the actual owner and repository name
           path: ./gosh
+      -
+        name: Checkout gosh
+        uses: actions/checkout@v4 # Use the latest version
+        with:
+          repository: yakmoose/terraform-provider-sitehost # Replace with the actual owner and repository name
+          path: ./terraform-provider-sitehost
       -
         name: Set up Go
         uses: actions/setup-go@v5
