@@ -2,7 +2,7 @@ version: 2
 before:
   hooks:
     - go mod download
-    - go mod edit -replace github.com/sitehostnz/gosh ./gosh
+    - go mod edit -replace github.com/sitehostnz/gosh=./gosh
 builds:
   - env:
       - CGO_ENABLED=0
