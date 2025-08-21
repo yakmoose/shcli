@@ -5,21 +5,33 @@ on:
 
 jobs:
   releaser:
-    name: Release
+    name: Build Snapshot
 
     permissions:
       contents: write
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       -
         name: Checkout
         uses: actions/checkout@v4
       -
+        name: Checkout gosh
+        uses: actions/checkout@v4 # Use the latest version
+        with:
+          repository: yakmoose/gosh # Replace with the actual owner and repository name
+          path: ./gosh
+      -
+        name: Checkout gosh
+        uses: actions/checkout@v4 # Use the latest version
+        with:
+          repository: yakmoose/terraform-provider-sitehost # Replace with the actual owner and repository name
+          path: ./terraform-provider-sitehost
+      -
         name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.20.6
+          go-version: 1.24.6
       -
         name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6

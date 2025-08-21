@@ -4,15 +4,24 @@ Copyright © 2022 John Lennard <john@yakmoo.se>
 package cmd
 
 import (
-	"github.com/spf13/pflag"
 	"os"
+	"shcli/cmd/api"
+	"shcli/cmd/bandwidth"
+	"shcli/cmd/cloud"
+	"shcli/cmd/dns"
+	"shcli/cmd/job"
+	"shcli/cmd/server"
+	"shcli/cmd/srs"
+	"shcli/cmd/ssh"
 	"strings"
+
+	"github.com/spf13/pflag"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-// rootCmd represents the base command when called without any subcommands
+// RootCmd represents the base command when called without any subcommands
 var (
 	cfgFile string
 	rootCmd = &cobra.Command{
@@ -25,7 +34,7 @@ var (
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
+// This is called by main.main(). It only needs to happen once to the RootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -50,7 +59,7 @@ func initConfig() {
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer("SERVICE-ACCOUNT", "OP_SERVICE_ACCOUNT_TOKEN"))
 	viper.AutomaticEnv()
-	
+
 	if err := viper.ReadInConfig(); err != nil {
 		// panic(err)
 	}
@@ -83,4 +92,14 @@ func init() {
 	viper.BindPFlag("apiKey", rootCmd.PersistentFlags().Lookup("apiKey"))
 	viper.BindPFlag("clientId", rootCmd.PersistentFlags().Lookup("clientId"))
 	viper.BindPFlag("format", rootCmd.PersistentFlags().Lookup("format"))
+
+	rootCmd.AddCommand(api.Cmd)
+	rootCmd.AddCommand(cloud.Cmd)
+	rootCmd.AddCommand(dns.Cmd)
+	rootCmd.AddCommand(ssh.Cmd)
+	rootCmd.AddCommand(server.Cmd)
+	rootCmd.AddCommand(job.Cmd)
+	rootCmd.AddCommand(bandwidth.Cmd)
+
+	rootCmd.AddCommand(srs.Cmd)
 }

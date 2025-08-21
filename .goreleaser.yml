@@ -2,18 +2,20 @@ version: 2
 before:
   hooks:
     - go mod download
+    - go mod edit -replace github.com/sitehostnz/gosh=./gosh
+    - go mod edit -replace github.com/sitehostnz/terraform-provider-sitehost=./terraform-provider-sitehost
+    - go mod tidy
 builds:
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
-      - windows
       - darwin
     goarch:
       - arm64
       - amd64
 archives:
-  - formats: ['binary']
+  - formats: ['tar.gz']
 checksum:
   name_template: 'checksums.txt'
 snapshot:
